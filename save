@@ -3,18 +3,13 @@
 --!divine-intellect
 -- https://discord.gg/wx4ThpAsmw
 
-local function deepClone(tbl)
-    if type(tbl) ~= "table" then
-        return tbl
-    end
+local function shallowCloneWithMetatable(tbl)
     local copy = {}
     for key, value in pairs(tbl) do
-        copy[key] = deepClone(value)
+        copy[key] = value
     end
-    return copy
+    return setmetatable(copy, getmetatable(tbl))
 end
-
-local tmp = deepClone(OPTIONS.ExtraInstances)
 
 
 local function string_find(s, pattern)
@@ -1680,7 +1675,7 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 
 	do
 		local mode = string.lower(OPTIONS.mode)
-		local tmp = deepClone(OPTIONS.ExtraInstances)
+		local tmp = shallowCloneWithMetatable(OPTIONS.ExtraInstances)
 
 		local PlaceName = game.PlaceId
 
