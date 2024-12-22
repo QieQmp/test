@@ -3,13 +3,19 @@
 --!divine-intellect
 -- https://discord.gg/wx4ThpAsmw
 
-local function shallowClone(tbl)
+local function deepClone(tbl)
+    if type(tbl) ~= "table" then
+        return tbl
+    end
     local copy = {}
     for key, value in pairs(tbl) do
-        copy[key] = value
+        copy[key] = deepClone(value)
     end
     return copy
 end
+
+local tmp = deepClone(OPTIONS.ExtraInstances)
+
 
 local function string_find(s, pattern)
 	return string.find(s, pattern, nil, true)
@@ -1674,7 +1680,7 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 
 	do
 		local mode = string.lower(OPTIONS.mode)
-		local tmp = shallowClone(OPTIONS.ExtraInstances)
+		local tmp = deepClone(OPTIONS.ExtraInstances)
 
 		local PlaceName = game.PlaceId
 
